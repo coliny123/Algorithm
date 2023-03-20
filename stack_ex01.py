@@ -42,31 +42,40 @@ def peek():
     if is_stackempty():
         print("스택이 비었습니다.")
         return None
-    else:
-        return stack[top]
+    return stack[top]
 
+
+def check_bracket(expr):
+    for ch in expr:
+        if ch in '([{<':
+            push(ch)
+        elif ch in ')]}>':
+            out = pop()
+            if ch == ')' and out == '(':
+                pass
+            elif ch == ']' and out == '[':
+                pass
+            elif ch == '}' and out == '{':
+                pass
+            elif ch == '>' and out == '<':
+                pass
+            else:
+                return False
+        else:
+            pass
+    if is_stackempty():
+        return True
+    else:
+        return False
 
 SIZE = 100
 stack = [None for _ in range(SIZE)]
 top = -1
 
 if __name__ == "__main__":
-    urls = ['naver.com', 'daum.net', 'nate.com']
 
-    for url in urls:
-        push(url)
-        webbrowser.open('http://' + url)
-        print(url, end=" --> ")
-        time.sleep(1)
+    expr_arr = ['(A+B)', ')A+B(', '((A+B)-C', '(A+B]', '(<A+{B-C}/[C*D]>)']
 
-    print("방문 종료")
-    time.sleep(3)
-
-    while True:
-        url = pop()
-        if url == None:
-            break
-        webbrowser.open('http://'+url)
-        print(url, end=' --> ')
-        time.sleep(1)
-    print("방문 종료")
+    for expr in expr_arr:
+        top = -1
+        print(f"{expr} --> {check_bracket(expr)}")
