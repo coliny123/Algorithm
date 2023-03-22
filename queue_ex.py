@@ -1,20 +1,14 @@
+import random
+
+
 def is_queuefull():
-    global SIZE, queue, front, rear
-    if rear != SIZE-1:
-        return False
-    elif rear == SIZE-1 and front == -1:
+    if (rear+1) % SIZE == front:
         return True
     else:
-        for i in range(front+1, SIZE):
-            queue[i-1] = queue[i]
-            queue[i] = None
-        front -= 1
-        rear -= 1
         return False
 
 
 def is_queueempty():
-    global SIZE, queue, front, rear
     if rear == front:
         return True
     else:
@@ -24,24 +18,19 @@ def is_queueempty():
 def enqueue(data):
     global SIZE, queue, front, rear
     if is_queuefull():
-        print("큐가 가득 찼습니다")
         return
-    rear += 1
+    rear = (rear+1) % SIZE
     queue[rear] = data
 
 
 def dequeue():
     global SIZE, queue, front, rear
     if is_queueempty():
+        print("큐가 비었습니다.")
         return None
-    front += 1
+    front = (front+1) % SIZE
     data = queue[front]
     queue[front] = None
-    for i in range(front+1, rear+1):
-        queue[i-1] = queue[i]
-        queue[i] = None
-    front -= 1
-    rear -= 1
     return data
 
 
@@ -49,22 +38,23 @@ def peek():
     global SIZE, queue, front, rear
     if is_queueempty():
         return None
-    return queue[front+1]
+    return queue[(front+1) % SIZE]
 
 
-SIZE = 5
+SIZE = 6
 queue = [None for _ in range(SIZE)]
-front, rear = -1, -1
+front, rear = 0, 0
 
 if __name__ == "__main__":
-    for _ in range(SIZE):
-        print(f"(남은 인원:{SIZE-(rear+1)})", end="")
-        data = input("대기자 명단에 등록하시오 : ")
-        enqueue(data)
+    call_list = [('고장', 3), ('사용', 9), ('환불', 4), ('기타', 1)]
+    total = 0
+    for i in range(SIZE-1):
+        print(f"귀하의 대기 예상시간은 {total}")
+        print(f"현재 대기 콜 : {queue}")
+        print()
+        random.shuffle(call_list)
+        total = total + call_list[0][1]
+        enqueue(call_list[0])
 
-    for _ in range(SIZE):
-        print(f"대기 줄 상태 : {queue}")
-        print(f"{dequeue()} 님 식당에 들어감")
-
-    print(f"대기 줄 상태 : {queue}")
-    print("식당 영업 종료")
+    print(f"최종 대기 콜 : {queue}")
+    print("프로그램 종료!")
