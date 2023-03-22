@@ -1,11 +1,20 @@
 def is_queuefull():
-    if rear >= SIZE-1:  # rear가 SIZE-1까지 왔지만 dequeue로 인해 앞이 비어있으면??
+    global SIZE, queue, front, rear
+    if rear != SIZE-1:  # rear가 SIZE-1까지 왔지만 dequeue로 인해 앞이 비어있으면??
+        return False
+    elif rear == SIZE-1 and front == -1:
         return True
     else:
+        for i in range(front+1, SIZE):
+            queue[i-1] = queue[i]
+            queue[i] = None
+        front -= 1
+        rear -= 1
         return False
 
 
 def is_queueempty():
+    global SIZE, queue, front, rear
     if rear == front:
         return True
     else:
