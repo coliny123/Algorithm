@@ -30,3 +30,23 @@ for name in nameAry[1:]:
             current = current.right
 
 print("이진 탐색 트리 구성 완료")
+
+find_name = input("찾을 그룹 이름 : ")
+
+current = root
+while True:
+    if find_name == current.data:
+        print(f"{find_name} 을 찾음")
+        break
+    elif find_name < current.data:
+        if current.left is None:
+            print(f"{find_name} 이 트리에 없음")
+            break
+        current = current.left
+    else:
+        if current.right is None:
+            print(f"{find_name} 이 트리에 없음")
+            break
+        current = current.right
+
+
