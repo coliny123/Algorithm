@@ -31,22 +31,44 @@ for name in nameAry[1:]:
 
 print("이진 탐색 트리 구성 완료")
 
-find_name = input("찾을 그룹 이름 : ")
+delete_name = input("삭제할 그룹 이름 : ")
 
 current = root
+parent = None
 while True:
-    if find_name == current.data:
-        print(f"{find_name} 을 찾음")
+    if delete_name == current.data:
+
+        if current.left is None and current.right is None:
+            if parent.left is current:
+                parent.left = None
+            else:
+                parent.right = None
+            del current
+        elif current.left is not None and current.right is None:
+            if parent.left is current:
+                parent.left = current.left
+            else:
+                parent.right = current.left
+            del current
+        elif current.left is None and current.right is not None:
+            if parent.left is current:
+                parent.left = current.left
+            else:
+                parent.right = current.left
+            del current
+        print(f"{delete_name} 가 삭제 됨")
         break
-    elif find_name < current.data:
+    elif delete_name < current.data:
         if current.left is None:
-            print(f"{find_name} 이 트리에 없음")
+            print(f"{delete_name} 가 트리에 없음")
             break
+        parent = current
         current = current.left
     else:
         if current.right is None:
-            print(f"{find_name} 이 트리에 없음")
+            print(f"{delete_name} 가 트리에 없음")
             break
+        parent = current
         current = current.right
 
 
